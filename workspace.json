@@ -1,0 +1,15 @@
+{
+  "name": "ablage",
+  "programs": [
+    {
+      "label": "frontend",
+      "path": "../ablage/vue-ablage",
+      "cmd": "npm run dev"
+    },
+    {
+      "label": "backend",
+      "path": "../ablage/go-ablage/cmd/api-server",
+      "cmd": "go run ."
+    }
+  ]
+}

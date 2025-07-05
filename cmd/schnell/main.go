@@ -1,32 +1,31 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"log/slog"
+	"os"
 	"sync"
 
-	"github.com/fatih/color"
 	"github.com/n-keist/schnell/internal/model"
 	"github.com/n-keist/schnell/internal/runner"
 )
 
 func main() {
-	progs := []model.Program{
-		{
-			Label: "frontend",
-			Path:  "../ablage/vue-ablage",
-			Cmd:   "npm run dev",
-			Color: color.FgGreen,
-		},
-		{
-			Label: "backend",
-			Path:  "../ablage/go-ablage/cmd/api-server",
-			Cmd:   "go run .",
-			Color: color.FgBlue,
-		},
+	workspaceFile, err := os.ReadFile("workspace.json")
+	if err != nil {
+		slog.Error("workspace.json error", "error", err.Error())
+		return
+	}
+
+	var workspace model.Workspace
+	if err := json.Unmarshal(workspaceFile, &workspace); err != nil {
+		slog.Error("could not decode workspace config", "error", err.Error())
+		return
 	}
 
 	var wg sync.WaitGroup
-	for _, p := range progs {
+	for _, p := range workspace.Programs {
 		wg.Add(1)
 		go runner.RunProgram(p, &wg)
 	}

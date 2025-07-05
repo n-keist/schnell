@@ -4,9 +4,9 @@ import "github.com/fatih/color"
 
 type (
 	Program struct {
-		Label string
-		Path  string
-		Cmd   string
+		Label string `json:"label"`
+		Path  string `json:"path"`
+		Cmd   string `json:"cmd"`
 		Color color.Attribute
 	}
 )
