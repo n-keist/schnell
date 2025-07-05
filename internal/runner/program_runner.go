@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"math/rand/v2"
 	"os"
 	"os/exec"
 	"strings"
@@ -15,6 +16,7 @@ import (
 
 func RunProgram(p model.Program, wg *sync.WaitGroup) {
 	defer wg.Done()
+	assignColor(&p)
 
 	progColor := color.New(p.Color).SprintFunc()
 
@@ -56,4 +58,12 @@ func RunProgram(p model.Program, wg *sync.WaitGroup) {
 	} else {
 		fmt.Printf("goodbye %s", progColor(p.Label))
 	}
+}
+
+var (
+	colors = []color.Attribute{color.FgBlue, color.FgCyan, color.FgGreen, color.FgMagenta, color.FgYellow}
+)
+
+func assignColor(p *model.Program) {
+	p.Color = colors[rand.IntN(len(colors))]
 }
